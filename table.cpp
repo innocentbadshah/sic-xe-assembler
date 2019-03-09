@@ -20,7 +20,7 @@ struct info_op
     }
 };
 
-struct info_reg
+struct info_reg 
 {
     int num;
     char exist;
@@ -29,6 +29,7 @@ struct info_reg
         exist='n';
     }
 };
+
 struct info_label
 {
     string address;
@@ -84,6 +85,15 @@ int reg_num(char a)
     if(a=='T') return 5;
     if(a=='F') return 6;
 }
+// enum reg_num{
+//     A,
+//     X,
+//     L,
+//     B,
+//     S,
+//     T,
+//     F
+// };
 
 
 /*---------OPTABLE-----------*/
@@ -331,7 +341,6 @@ void create()
 
 
 /*---REGISTERS'-INFO-------*/
-
     REGISTER["A"].num=0;
     REGISTER["A"].exist='y';
 

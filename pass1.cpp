@@ -45,13 +45,13 @@ bool error_flag=0;
 ifstream fin1;
 ofstream fout1,error;
 
-void run()
+void run(char *filename)
 {
     create();
     char ch;
     string s,word[5];
     int count=0;
-    fin1.open("input_fibonacci.txt");
+    fin1.open(filename);
     fout1.open("intermediate.txt");
     error.open("error.txt");
     line=5;

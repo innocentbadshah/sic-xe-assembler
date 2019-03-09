@@ -23,7 +23,7 @@ void modify_object_file() {
         if (s == "") break;
         obj << s << endl;
     }
-    //fin.close();
+    fin.close();
 }
 
 bool imm, ind;
@@ -43,8 +43,8 @@ string gen_code(string[]);
 string text_s = "", text_e = "";
 int text_length = 0, base = INT_MAX;
 
-int main() {
-    run();
+int main(int argc,char *argv[]) {
+    run(argv[1]);
     string a[6];
     char ch;
     hexa start;
