@@ -10,7 +10,7 @@ using namespace std;
 
 #include "pass1.cpp"
 
-ofstream obj, lst, mod;
+ofstream obj, mod;
 ifstream intm;
 int curr_block_num;
 
@@ -48,28 +48,22 @@ int main(int argc,char *argv[]) {
     string a[6];
     char ch;
     hexa start;
-    if (error_flag) {
-        cout << "Errors encountered! Listing file not prepared!" << endl;
-        cout << "Have a look at the error file to know more!" << endl;
-        exit(1);
-    }
+
+    if(false)// if (error_flag) {
+    //     cout << "Errors encountered! Listing file not prepared!" << endl;
+    //     cout << "Have a look at the error file to know more!" << endl;
+    //     exit(1);
+    // }
     intm.open("intermediate.txt");
-    obj.open("object.txt");
-    lst.open("list.txt");
+    obj.open("output.txt");
     mod.open("modification.txt");
-    lst << "Line\tLoc   Block\t\tSource Statement\t\tObject Code" << endl;
-    lst << "----------------------------------------------------------------"
-        << endl << endl;
     input(a);
     curr_block = "DEFAULT";
     curr_block_num = 0;
     while (a[1] == "$") {
-        lst << a[0] << "\t\t " << a[2] << endl;
         input(a);
     }
     if (a[2] == "START") {
-        lst << a[0] << "\t" << extendTo(4, a[4]) << "  " << curr_block_num
-            << "\t\t" << a[1] << "\t\t" << a[2] << "\t\t" << a[3] << endl;
         obj << "H^";
         int i;
         for (i = 0; i < a[1].length(); ++i)
@@ -88,11 +82,9 @@ int main(int argc,char *argv[]) {
     while (true) {
         input(a);
         if (a[1] == "$") {
-            lst << a[0] << "\t\t " << a[2] << endl;
             continue;
         }
         if (a[2] == "END") {
-            lst << a[0] << "\t\t\t\t\t\t" << a[2] << "\t\t" << a[3] << endl;
             if (text_length > 0) {
                 obj << text_s << "^" << extendTo(2, toHex(text_length / 2))
                     << text_e << endl;
@@ -125,8 +117,6 @@ void assemble(string a[]) {
     if (a[2] == "USE") {
         curr_block = a[3];
         curr_block_num = BLOCK[curr_block].num;
-        lst << a[0] << "\t0000  " << curr_block_num << "\t\t\t" << a[2]
-            << "\t\t" << a[3] << endl;
         if (text_length > 0)
             obj << text_s << "^" << extendTo(2, toHex(text_length / 2))
                 << text_e << endl;
@@ -136,8 +126,6 @@ void assemble(string a[]) {
         return;
     }
     if (a[2] == "RESB" || a[2] == "RESW") {
-        lst << a[0] << "\t" << extendTo(4, a[4]) << "  " << curr_block_num
-            << "\t\t" << a[1] << "\t" << a[2] << "\t\t" << a[3] << endl;
         if (text_length > 0)
             obj << text_s << "^" << extendTo(2, toHex(text_length / 2))
                 << text_e << endl;
@@ -149,23 +137,6 @@ void assemble(string a[]) {
     imm = ind = false;
     object_code = gen_code(a);
     cout << "a[2]: " << a[2] << ":::" << object_code << endl;
-    if (a[2] == "BYTE" || a[2] == "WORD")
-        lst << a[0] << "\t" << extendTo(4, a[4]) << "  " << curr_block_num
-            << "\t\t" << a[1] << "\t" << a[2] << "\t\t" << a[3] << endl;
-    else {
-        if (imm)
-            lst << a[0] << "\t" << extendTo(4, a[4]) << "  " << curr_block_num
-                << "\t\t" << a[1] << "\t\t" << a[2] << "\t\t#" << a[3] << "\t\t"
-                << object_code << endl;
-        else if (ind)
-            lst << a[0] << "\t" << extendTo(4, a[4]) << "  " << curr_block_num
-                << "\t\t" << a[1] << "\t\t" << a[2] << "\t\t@" << a[3] << "\t\t"
-                << object_code << endl;
-        else
-            lst << a[0] << "\t" << extendTo(4, a[4]) << "  " << curr_block_num
-                << "\t\t" << a[1] << "\t\t" << a[2] << "\t\t" << a[3] << "\t\t"
-                << object_code << endl;
-    }
     if (text_s == "") {
         loc_ctr = toHex(toDec(BLOCK[curr_block].address) + toDec(a[4]));
         text_s = "T^" + extendTo(6, loc_ctr);

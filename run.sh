@@ -1,0 +1,1 @@
+./Assembler.sh 2>/dev/null

@@ -92,8 +92,7 @@ void setCsect(vector<string> &list,int count, int &i, int nCsect){
     i++;
 }
 
-int firstPass(char* filename){	
-	cout<<"\n.\n.\n.\n\tPass 1 initiating...............";								
+int firstPass(char* filename){								
     ifstream inFile(filename);										
     int i = 0,nCsect = 0;											
     string str;
@@ -140,8 +139,7 @@ int firstPass(char* filename){
     return nCsect;
 }
 
-void secondpass(int nCsect){	
-	cout<<"\n.\n.\n\tPass 2 initiating...............\n\n\n";									
+void secondpass(int nCsect){									
     for(int i=0;i<nCsect;i++){
         for(int j=0;j<Array[i].size();j++){
             int temp = 0;
@@ -273,9 +271,8 @@ string intToString(int n, int x = 6){
 
 void printObjectProgram(int nCsect){										
     ofstream outfile;
-    outfile.open("csect.txt");
+    outfile.open("output.txt");
     outfile << "Writing to this file\n\n";
-    printf("%d",nCsect);
     for(int i=0;i<nCsect;i++){											
         int sectionSize = Array[i].back().address;
         if(Array[i].back().instruction!="RESW" && Array[i].back().instruction!="RESB" && Array[i].back().instruction!="BYTE" && Array[i].back().instruction!="WORD")
@@ -390,6 +387,6 @@ int main(int argc,char *argv[]){
     int nCsect=firstPass(argv[1]);											
     secondpass(nCsect);													
     printObjectProgram(nCsect);	
-	cout<<"Object program is stored in 'Output.txt' file  in the same directory\n\nThank you.....\n";										
+	cout << "INPUT FILE ASSEMBLED SUCCESSFULY!!" << endl;
     return 0;
 }
